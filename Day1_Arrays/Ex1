@@ -1,0 +1,69 @@
+// Code your testbench here
+// or browse Examples
+/*Dynamic Array:
+
+module dynamic_array;
+  int array[];
+  int array2[];
+  int que[$];
+  int i,j;
+  int y;
+  int que2[$];
+  task add_value(int num);
+    array = new[num];
+    for(i = 0;i<num;i++)
+      begin
+        array[i] = $urandom_range(1,100);
+      end
+  endtask
+  
+  task sort(); 
+      int temp;
+      for(i = 0;i<array.size();i++) begin
+        for(j=i+1;j<array.size();j++) begin
+          if(array[i] > array[j]) begin
+            temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+          end
+        end
+      end
+      endtask
+  
+  
+  initial begin
+    que = {1,2};
+    que2 = {4,5,6};
+    
+  add_value(15);
+  foreach(array[i])
+    begin
+      $display("array[%0d] = %0d",i,array[i]);
+    end
+  array2 = array;
+    $display("array2 : %p",array2);
+    array2.sort();
+    $display("array2: %p",array2);
+    array.delete();
+   $display("array : %p",array);
+    add_value(20);
+    $display("array : %p",array);
+    sort();
+    $display("array : %p",array);
+    que.insert(0,10);
+    $display("que : %p",que);
+    que.push_front(12);
+    $display("que : %p",que);
+    foreach(que[i]) begin
+      que2.push_front(que[i]);
+    end
+    $display("que2 %p",que2);
+    que = {que,que2};
+    $display("que: %p",que);
+    foreach(que[i]) begin
+      y = que.pop_front();
+    $display("popped value : %d",y);
+  end
+    
+  end
+endmodule
