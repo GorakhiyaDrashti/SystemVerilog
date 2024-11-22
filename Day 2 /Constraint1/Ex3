@@ -1,0 +1,51 @@
+////Declare a dynamic array with random values write a function to sort the array in ascending order using a simple sorting algorithm
+
+
+module tb;
+  
+  class arrays;
+    
+    rand int arr[];
+   
+    constraint c1 { foreach(arr[i]) arr[i] inside {[1:100]};}
+    constraint c2 { arr.size() inside {[10:20]};}
+    
+    function void display();
+      for(int i=0;i<arr.size();i++) begin
+        $display("arr: %d %d",i, arr[i]);
+      end
+    endfunction
+    
+   extern function void sort();
+      
+                                              
+  endclass
+  
+     function void arrays:: sort();
+       int temp;
+       for(int i=0;i<arr.size();i++) begin
+         for(int j = i+1;j<arr.size();j++) begin
+           if(arr[i]>arr[j]) begin
+           temp = arr[i];
+           arr[i] = arr[j];
+           arr[j] = temp;
+           end
+         end
+       end
+       $display("array sorted");
+     endfunction
+     
+     
+  arrays a;
+  
+  initial begin
+    a = new();
+
+    a.randomize();
+    a.display();
+    a.sort();
+    a.display();
+  end
+endmodule
+
+  
