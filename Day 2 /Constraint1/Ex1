@@ -1,0 +1,42 @@
+1. Write a constraint to generate values divisible by 5 and 6.
+
+
+// Code your testbench here
+// or browse Examples
+class generator;
+  
+  randc int a, b; ////////////rand or randc 
+  
+  constraint data {a % 5 == 0;
+                   b %7 == 0;}
+  constraint c1 {
+    a inside {[1: 500]};
+    b inside {[1:500]};
+  }
+  
+endclass
+ 
+module tb;
+  generator g;
+  //int i = 0;
+  //int status = 0;
+  
+  initial begin
+   
+    
+    for(int i=0;i<10;i++) begin
+      g = new();
+      g.randomize();
+      $display("Value of a :%0d and b: %0d", g.a,g.b);
+      #10;
+    end
+    
+  end
+  
+  
+endmodule
+
+
+
+
+
