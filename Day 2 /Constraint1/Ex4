@@ -1,37 +1,35 @@
-//2. Create a class for a password with fields length and password. Write constraints to ensure:
-//length is between 8 and 16 characters.
-//password contains at least one uppercase letter, one lowercase letter, one digit, and one special character.\
+class Password;
+  rand int length;            
+  rand byte password[];                
 
+  constraint length_c {
+    length >= 8 && length <= 16;       
+    password.size() == length;
+  }
 
+  constraint composition_c {
+    password.sum() with ((item >= 65 && item <= 90) ? 1 : 0) >= 1;
 
-// Code your testbench here
-// or browse Examples
+    password.sum() with ((item >= 97 && item <= 122) ? 1 : 0) >= 1;
+
+    password.sum() with ((item >= 48 && item <= 57) ? 1 : 0) >= 1;
+
+    password.sum() with ((item inside {33, 35, 36, 37, 38, 42, 64}) ? 1 : 0) >= 1;
+  }
+endclass
+
 module top;
- 
-  class A;
-    rand bit [7:0] pw[];
-    constraint inside0_10 {
-      length inside {[8:16]};
-    }
-    constraint uniq { 
-      //foreach (pw[i]) {
-        pw.sum() with (7'(item inside {[97:122]}))==1; //a-z
-        pw.sum() with (7'(item inside {[65:90]}))==1;  //A-Z
-        pw.sum() with (7'(item inside {[33:46]}))==1;  //special char
-        pw.sum() with (7'(item inside {[48:57]}))==7;  //0-9
-      //}    
-    }
-    
-  endclass
- 
+  Password p;
 
-  A a=new;
   initial begin
-    repeat(10) begin
-      assert(a.randomize());
-      foreach(a.pw[i]) $write("%s",a.pw[i]);
-     $display("");
+    p = new();
+    repeat (10) begin
+      if (p.randomize()) begin
+        foreach (p.password[i]) $write("%c", p.password[i]);
+        $display("");
+      end else begin
+        $display("Password randomization failed.");
+      end
     end
   end
- 
 endmodule
