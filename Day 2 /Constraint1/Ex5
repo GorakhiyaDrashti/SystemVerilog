@@ -1,0 +1,44 @@
+/* Randomized Packet with Payload Constraints
+Problem: Create a packet class with the following fields:
+systemverilog
+Copy code
+class packet;
+    rand bit [7:0] source, destination;
+    rand bit [15:0] payload;
+endclass
+Constraints:
+The source and destination should not be equal.
+The payload should always be an even number between 100 and 1000.
+Challenge: Write code to randomize the class and display the generated packets.*/
+  
+  
+  
+class packet;
+    rand bit [7:0] source, destination;
+    rand bit [15:0] payload;
+  
+  constraint c1{
+    source != destination;
+    payload inside {[100 : 1000]};
+    payload %2 ==0;
+  }
+  
+  
+  function void display();
+    
+    $write("source : %0d",source);
+    $write("destination : %0d",destination);
+    $write("payload : %0d",payload);
+    
+  endfunction
+endclass
+
+module tb;
+  packet p;
+  initial begin
+    p = new();
+    assert(p.randomize());
+      p.display();
+  end
+endmodule
+      
