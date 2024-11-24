@@ -1,0 +1,36 @@
+Problem 3: Sequential Event Ordering
+Assert that a read signal (rd) is never asserted unless a write signal (wr) was asserted within the last 5 clock cycles.
+
+
+// Code your testbench here
+// or browse Examples
+module tb;
+  bit clk, wr, rd;
+  initial begin
+    clk = 0;
+    wr = 0;
+    rd = 0;
+  end
+    initial begin
+     $dumpfile("dump.vcd"); 
+      $dumpvars;
+      #100;
+      $finish();
+ end
+  always #5 clk = ~clk;
+  initial begin
+    #10;
+    wr = 1;
+    #20;
+    rd = 1;
+  end
+
+  property p1;
+    @(posedge clk) rd |-> $past(wr,1) || $past(wr,2) || $past(wr,3) || $past(wr,4) || $past(wr,5);
+  endproperty
+  
+  assert property (p1)
+    $info("assertion success $time");
+    else
+      $error("assertion failed $time");
+endmodule
