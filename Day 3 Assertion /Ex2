@@ -1,0 +1,35 @@
+Problem 1: Reset Assertion
+// Create an assertion to ensure that whenever a reset (resetn) signal is de-asserted (goes high), the enable signal must go high within 2 clock cycles.
+
+
+// Code your testbench here
+// or browse Examples
+module tb;
+  bit clk, resetn, enable;
+  initial begin
+    clk = 0;
+    resetn = 0;
+    enable = 0;
+  end
+    initial begin
+     $dumpfile("dump.vcd"); 
+      $dumpvars;
+      #100;
+      $finish();
+ end
+  always #5 clk = ~clk;
+  initial begin
+     #5
+    resetn = 1;
+     #15    enable = 1;
+  end
+
+  property p1;
+    @(posedge clk) $rose(resetn) |-> ##[1:2] enable;
+  endproperty
+  
+  assert property (p1)
+    $info("assertion success $time");
+    else
+      $error("assertion failed $time");
+endmodule
