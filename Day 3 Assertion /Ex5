@@ -1,0 +1,42 @@
+///if rst deassert, current value and past value of the signal differ only in single bit
+
+// Code your testbench here
+// or browse Examples
+module tb;
+  bit rst;
+  bit [3:0] sig;
+  bit clk;
+  
+  initial begin
+    rst = 1;
+    clk = 0;
+    sig = 4'b0000;
+  end
+  
+  always #5 clk = ~clk;
+  
+  initial begin
+    #5 
+    rst = 0;
+    #15
+    sig = 0101;
+   
+  end
+  
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+    #200;
+    $finish();
+  end
+  
+  property p1;
+    @(posedge clk) $fell(rst) |=> $onehot(sig ^ $past(sig));
+  endproperty
+  
+  assert property (p1)
+    $info("assertion passed $time",$time);
+    else
+      $error("assertion failed ",$time);
+    endmodule
+    
