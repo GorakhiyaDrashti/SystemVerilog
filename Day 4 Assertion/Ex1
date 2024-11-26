@@ -1,0 +1,63 @@
+///In D FF output remain constant if CE is low.
+
+////if D FF, output must remain constant if CE is low.
+
+
+module tb;
+  bit CE, Din;
+  bit Q, Qbar;
+  bit clk;
+  
+  initial begin
+    CE = 1;
+    Din = 0;
+    clk = 0;
+  end
+  
+  always #5 clk = ~clk;
+  
+  always @(posedge clk)
+    begin
+      if(CE) begin
+        Q = Din;
+        Qbar = ~Q;
+      end
+      else
+        Q = $past(Q);
+      $display("value of Q and prev Q is %0b, %0b", Q, $past(Q));
+      
+    end
+  
+  initial begin
+    #5 Din = 1;
+    #10 Din = 0;
+    #10 Din = 1;
+    #10 Din = 0;
+    #20;
+    CE = 0;
+    #10
+    Din = 1;
+    #20
+    Din = 0;
+    #20;
+    Din = 1;
+    
+  end
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+    #200;
+    $finish();
+  end
+  
+  property p1;
+    @(posedge clk) $fell(CE) |-> $changed(Q) == 0;
+  endproperty
+  assert property (p1)
+    $info("assertion passed", $time);
+    else
+      $error("assertion failed", $time);
+    
+    endmodule
+    
+  
