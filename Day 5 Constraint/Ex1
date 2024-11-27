@@ -1,0 +1,32 @@
+////Constraint to generate unique number between 99 and 100.
+
+// Code your testbench here
+// or browse Examples
+
+module tb;
+  
+  class print;
+    
+    randc int a;
+    real num;
+    
+    constraint c1 { 
+      a inside {[990:1000]};
+    }
+    
+    function display();
+      num = a/10.0;
+      $display("unique value of a is: %2f",num);
+    endfunction
+    
+  endclass
+  
+  print p;
+  initial begin
+    p = new();
+    for(int i = 0;i<10;i++) begin
+    p.randomize();
+    p.display();
+    end
+  end
+endmodule
