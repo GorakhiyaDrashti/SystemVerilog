@@ -1,0 +1,37 @@
+////Derive odd numbers within the range of 10 to 30 using SV constraint.
+
+
+class odd;
+  
+  rand int num;
+  int que[$];
+  constraint c1 {
+    (num % 2) != 0;
+     num inside {[10:30]};
+  }
+  
+  function display();
+    $display("value of odd number are: %0d",num);
+    que.push_back(num);
+  endfunction
+  
+endclass
+
+module tb;
+  
+  odd o1;
+  int que[$];
+  initial begin
+    o1 = new();
+    for(int i=0;i<10;i++) begin
+      o1.randomize();
+      o1.display();
+    end
+      $display("queue: %0p", o1.que);
+      o1.que.sort();
+      $display("sorted queue : %0p",o1.que);
+  end
+endmodule
+
+
+  
