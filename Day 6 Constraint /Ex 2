@@ -1,0 +1,34 @@
+/*Write a constraint for two random variables such that one
+variable should not match with the other & the total number of bits
+toggled in one variable should be 5 w.r.t the other.*/
+
+class random;
+  rand int power;
+  rand int a;
+  
+  constraint c1{
+    
+    power inside {[1:10]}; 
+    a == 2**power;
+  }
+   
+  function display();
+    $display("value of power is %0d, a is %0d", power, a);
+  endfunction
+endclass
+module tb;
+  
+  
+  random r;
+  initial begin 
+    for(int i=0;i<10;i++) begin
+    r = new();
+    r.randomize();
+    r.display();
+    end
+  end
+  
+  
+endmodule
+  
+    
