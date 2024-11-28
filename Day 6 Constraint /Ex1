@@ -1,0 +1,36 @@
+////Write a constraint for 4-bit dynamic array. The size of the array
+///should be in between 15 to 20. There should be even number in odd
+///locations and odd number in even locations.
+
+
+class odd_even;
+     int i;
+     rand int seq[10];
+     constraint c1 {
+       foreach(seq[i])
+         seq[i] inside {[1:100]};
+     }
+     constraint c3 {
+      
+     }
+    
+     constraint c2 {
+       foreach(seq[i])
+         if(i%2 == 0)
+           seq[i]%2 != 0;
+         else
+           seq[i]%2 == 0;
+     }
+   
+   endclass
+  
+   initial begin
+    
+     odd_even n1;
+     n1 = new();
+     assert(n1.randomize())
+     else $display("randomization failed");
+     $display("array value: %0p",n1.seq);
+    
+   end
+     endmodule
