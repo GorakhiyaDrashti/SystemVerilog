@@ -1,0 +1,53 @@
+/*Write a constraint to randomly generate unique prime numbers
+in an array between 1 and 200. The generated prime numbers
+should have 7 in it (Eg.: 7, 17, 37..)*/
+
+class prime;
+  rand int que[$];
+  rand int arr[];
+  
+  constraint c1 {
+    arr.size() == 200;
+    
+    foreach(arr[i])
+      arr[i] == i;
+  }
+  
+//   constraint c2{
+//     foreach(que[i])
+//       que[i] % 10 == 7;
+//   }
+  function int is_prime(int n);
+    int count = 0;
+    if(n<2)
+      return 2;
+    else begin
+      for(int i = 1;i<n/2;i++) begin
+        if(n%i == 0)
+          count  = count+ 1;
+      end
+      return count;
+    end
+  endfunction
+  
+  function find_prime();
+    foreach(arr[i]) begin
+      if(is_prime(arr[i]) < 2 && arr[i] % 10 == 7)
+        que.push_back(arr[i]);  
+    end
+  endfunction
+      
+  function void display();
+    $display("que: %0p", que);
+  endfunction
+endclass
+
+module tb;
+  prime p;
+  initial begin
+    p = new();
+    p.randomize();
+    p.find_prime();
+    p.display();
+  end
+endmodule
