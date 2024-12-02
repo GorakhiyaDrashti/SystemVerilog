@@ -1,0 +1,36 @@
+//// write a constraint to generate a mirror pattern 
+
+//// write a constraint to generate a mirror pattern 
+
+class pattern;
+  rand int que[];
+  
+  constraint c1{
+    
+    que.size inside {[4:15]};
+    foreach(que[i]) que[i] inside {[1:200]};
+    foreach (que[i]) {
+      if(i>=que.size()/2)
+        que[i] == que[que.size()-1-i];
+    }
+  }
+      function void display();
+    $display("array : %0p",que);
+    
+  endfunction
+  
+endclass
+
+module tb;
+  pattern q1;
+  
+  initial begin
+    q1 = new();
+    for(int i=0;i<10;i++) begin
+    assert(q1.randomize()) $info("assertion passed");
+    else $error("assrtion failed");
+    q1.display();
+    end
+  end
+endmodule
+
