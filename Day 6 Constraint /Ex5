@@ -1,0 +1,25 @@
+/*write a constraint to generate 8 bit number with exactly 3 consecutive 1's.*/
+
+class seq;
+  rand bit[7:0]a;
+  
+  constraint c1{
+    
+    $countones(a) == 3;
+    (a & (a>>1) & (a>>2)) != 0;
+  }
+  
+endclass
+module tb;
+  seq s;
+  initial begin
+    s = new();
+    for(int i=0;i<10;i++) begin
+    assert(s.randomize()) $info("assertion passed %0b, %0b, %0b",s.a,(s.a>>1),(s.a>>2));
+    else
+      $error("assertion failed");
+    end
+  end
+endmodule
+
+  
