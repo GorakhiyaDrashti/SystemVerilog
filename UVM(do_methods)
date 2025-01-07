@@ -13,19 +13,18 @@ string b = "UVM";
 real c = 12.22;
 
 virtual function string convert2string();
-string s = super.convert2string();
-s = {s, $sformatf("a : %0d",a)};
-s = {s,$sformatf("b : %0s",s)};
-s = {s, $sfromatf("c : %0f",s)};
-return s;
-endfunction
+	string s = super.convert2string();
+  s = {s, $sformatf("a : %0d", a)};
+  s = {s, $sformatf("b : %0s", b)};
+  s = {s, $sformatf("c : %0f", c)};
+		return s;
+	endfunction
 endclass
 
 module tb;
 first f;
 initial begin
 f = first::type_id::create("f");
-$uvm_info("TB_TOP", $sformatf("s : %0s",.fconvert2string()),UVM_DEFAULT};
+  `uvm_info("TB_TOP", $sformatf(" %0s",f.convert2string()), UVM_NONE);
 end
 endmodule
-
