@@ -1,0 +1,32 @@
+`include "uvm_macros.svh"
+import uvm_pkg::*;
+
+class first extends uvm_object;
+`uvm_object_utils(first)
+
+function new(string path = "first");
+super.new(path);
+endfunction
+
+bit [3:0] a = 4;
+string b = "UVM";
+real c = 12.22;
+
+virtual function string convert2string();
+string s = super.convert2string();
+s = {s, $sformatf("a : %0d",a)};
+s = {s,$sformatf("b : %0s",s)};
+s = {s, $sfromatf("c : %0f",s)};
+return s;
+endfunction
+endclass
+
+module tb;
+first f;
+initial begin
+f = first::type_id::create("f");
+f.convert.string();
+$uvm_info("TB_TOP", $sformatf("s : %0s",s.convert2string()),UVM_DEFAULT};
+end
+endmodule
+
