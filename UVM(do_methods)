@@ -25,7 +25,6 @@ module tb;
 first f;
 initial begin
 f = first::type_id::create("f");
-f.convert.string();
 $uvm_info("TB_TOP", $sformatf("s : %0s",s.convert2string()),UVM_DEFAULT};
 end
 endmodule
