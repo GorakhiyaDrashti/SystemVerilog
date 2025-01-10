@@ -1,0 +1,30 @@
+`include "uvm_macros.svh"
+import uvm_pkg::*;
+
+class first extends uvm_object;
+`uvm_object_utils(first)
+
+function new(string path = "first);
+super.new(path);
+endfunction
+
+int a = 12;
+real b = 23.33;
+string s = "UVM_EXERCISE"
+
+virtual function void do_print(uvm_printer printer);
+super.do_print(printer);
+printer.print_field_int("a",a , $bits(a), UVM_HEX);
+printer.print_string("s",s);
+printer.print_real("b", b);
+endfunction
+
+endclass
+module tb;
+first f;
+
+initial begin
+f = first::type_id::create("f");
+f.print();
+end
+endfunction
