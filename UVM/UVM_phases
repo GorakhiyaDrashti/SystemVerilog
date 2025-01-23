@@ -1,0 +1,26 @@
+// Code your testbench here
+// or browse Examples
+`include "uvm_macros.svh"
+import uvm_pkg::*;
+
+class comp extends uvm_component;
+  `uvm_component_utils(comp)
+  
+  function new(string path = "comp", uvm_component parent = null);
+    super.new(path,parent);
+  endfunction
+  
+  task reset_phase(uvm_phase phase);
+    `uvm_info("comp", "reset has started" ,UVM_NONE);
+    #10;
+    `uvm_info("comp", "reset has been finished", UVM_NONE);
+  endtask
+endclass
+
+module tb;
+  initial begin
+    
+    run_test("comp");
+  end
+endmodule
+
