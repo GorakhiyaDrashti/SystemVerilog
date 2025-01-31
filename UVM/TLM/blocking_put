@@ -1,9 +1,7 @@
 `include "uvm_macros.svh" // Includes UVM macros for component utilities and reporting.
 import uvm_pkg::*; // Imports the UVM package, which contains all UVM base classes and utilities.
 
-/////////////////////////////////////
-// Producer Class
-/////////////////////////////////////
+
 
 class producer extends uvm_component;
   `uvm_component_utils(producer) // Registers the producer class with the UVM factory, enabling dynamic object creation.
@@ -55,10 +53,7 @@ class consumer extends uvm_component;
     `uvm_info("consumer",$sformatf("recved data = %0d",datar),UVM_NONE); // Prints received data.
   endtask
 endclass
-
-/////////////////////////////////////
 // Environment Class
-/////////////////////////////////////
 
 class env extends uvm_env;
   `uvm_component_utils(env) // Registers the environment class with the UVM factory.
@@ -86,9 +81,8 @@ class env extends uvm_env;
   endfunction
 endclass
 
-/////////////////////////////////////
 // Test Class
-/////////////////////////////////////
+
 
 class test extends uvm_test;
   `uvm_component_utils(test) // Registers the test class with the UVM factory.
@@ -107,9 +101,9 @@ class test extends uvm_test;
   endfunction
 endclass
 
-/////////////////////////////////////
+
 // Testbench Module
-/////////////////////////////////////
+
 
 module tb;
   test t; // Declares a test instance.
