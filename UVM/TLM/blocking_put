@@ -1,0 +1,120 @@
+`include "uvm_macros.svh" // Includes UVM macros for component utilities and reporting.
+import uvm_pkg::*; // Imports the UVM package, which contains all UVM base classes and utilities.
+
+/////////////////////////////////////
+// Producer Class
+/////////////////////////////////////
+
+class producer extends uvm_component;
+  `uvm_component_utils(producer) // Registers the producer class with the UVM factory, enabling dynamic object creation.
+  
+  uvm_blocking_put_port #(int) send; // Declares a blocking put port to send data to the consumer.
+  int data = 12; // Sample integer data to send.
+
+  // Constructor: Initializes the producer component
+  function new(string path = "producer", uvm_component parent = null); 
+    super.new(path,parent); // Calls the parent class constructor for proper initialization.
+  endfunction
+  
+  // Build phase: Used for component construction
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase); // Calls the parent build_phase to ensure proper UVM behavior.
+    send = new("send",this); // Creates an instance of the send port.
+  endfunction
+  
+  // Main phase: Sends data to the consumer
+  task main_phase(uvm_phase phase);
+    phase.raise_objection(this); // Raises an objection to prevent simulation from ending until the task completes.
+    `uvm_info("producer", $sformatf("send data %0d",data),UVM_NONE); // Prints debug information.
+    send.put(data); // Sends data through the blocking put port.
+    phase.drop_objection(this); // Drops the objection, allowing simulation to end when all objections are cleared.
+  endtask
+  
+endclass
+
+
+class consumer extends uvm_component;
+  `uvm_component_utils(consumer) // Registers the consumer class with the UVM factory.
+
+  uvm_blocking_put_export #(int) recv; // Declares a blocking put export to receive data from the producer.
+  uvm_blocking_put_imp #(int, consumer) imp;  /// decalred the implement blocking put for the end point.
+  // Constructor: Initializes the consumer component
+  function new(string path = "consumer", uvm_component parent = null);
+    super.new(path,parent); // Calls the parent class constructor for proper initialization.
+  endfunction
+  
+  // Build phase: Used for component construction
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase); // Calls the parent build_phase.
+    recv = new("recv",this); // Creates an instance of the receive export.
+    imp = new("imp",this);
+  endfunction
+  
+  // put task: This is called by the producer to send data.
+  task put(int datar);
+    `uvm_info("consumer",$sformatf("recved data = %0d",datar),UVM_NONE); // Prints received data.
+  endtask
+endclass
+
+/////////////////////////////////////
+// Environment Class
+/////////////////////////////////////
+
+class env extends uvm_env;
+  `uvm_component_utils(env) // Registers the environment class with the UVM factory.
+
+  producer p; // Declares a producer instance.
+  consumer c; // Declares a consumer instance.
+
+  // Constructor: Initializes the environment component
+  function new(string path = "env", uvm_component parent = null);
+    super.new(path,parent); // Calls the parent class constructor for proper initialization.
+  endfunction
+  
+  // Build phase: Used to create components inside the environment
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase); // Calls the parent build_phase.
+    p = producer::type_id::create("p",this); // Creates an instance of the producer dynamically using the factory.
+    c = consumer::type_id::create("c",this); // Creates an instance of the consumer dynamically using the factory.
+  endfunction
+  
+  // Connect phase: Establishes connections between components
+  virtual function void connect_phase(uvm_phase phase);
+    super.connect_phase(phase); // Calls the parent connect_phase.
+    p.send.connect(c.recv); // Connects the producer's send port to the consumer's receive export.
+    c.recv.connect(c.imp);
+  endfunction
+endclass
+
+/////////////////////////////////////
+// Test Class
+/////////////////////////////////////
+
+class test extends uvm_test;
+  `uvm_component_utils(test) // Registers the test class with the UVM factory.
+
+  env e; // Declares an instance of the environment.
+
+  // Constructor: Initializes the test component
+  function new(string path = "test", uvm_component parent = null);
+    super.new(path,parent); // Calls the parent class constructor for proper initialization.
+  endfunction
+  
+  // Build phase: Creates the environment inside the test
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase); // Calls the parent build_phase.
+    e = env::type_id::create("e",this); // Dynamically creates an instance of the environment using the UVM factory.
+  endfunction
+endclass
+
+/////////////////////////////////////
+// Testbench Module
+/////////////////////////////////////
+
+module tb;
+  test t; // Declares a test instance.
+  
+  initial begin
+    run_test("test"); // Starts the UVM test with the name "test".
+  end
+endmodule
