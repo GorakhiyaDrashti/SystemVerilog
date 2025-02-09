@@ -1,0 +1,44 @@
+///// Macros, verbosity
+
+//// example 1-
+
+// Code your testbench here
+// or browse Examples
+`include "uvm_macros.svh"  // all the macros that we use in uvm included in this file
+import uvm_pkg::*;   /// allows the access of the defination of the class that we are going to extends
+
+
+class driver extends uvm_driver;
+  `uvm_component_utils(driver)  ///register a class to the factory.
+  
+  function new(string path, uvm_component parent);   
+    super.new(path,parent);  /// constructor of the parent class to properly initialized the parent class.
+  endfunction
+  
+  task run();
+    `uvm_info("DRV1", "first", UVM_HIGH);
+    `uvm_info("DRV2", "second", UVM_HIGH);
+  endtask
+  
+endclass 
+  
+module tb;
+  int data = 56;
+  driver drv;
+  
+  
+  initial begin
+    drv = new("DRV", null);
+    `uvm_info("TB_TOP", $sformatf("value of data is %0d",data), UVM_NONE);
+    $display("hello world");
+    $display("uvm verbosity",uvm_top.get_report_verbosity_level);  /// check the verbosity level and here uvm_top is roo class that we use whenever we want to work with root class.
+    #10;
+    //uvm_top.set_report_verbosity_level(UVM_HIGH);  ///change the verbosity
+    drv.set_report_id_verbosity("DRV1",UVM_HIGH);
+   // `uvm_info("TB_TOP","uvm_verbosity",UVM_HIGH); /// this won't get print as it's verbosity is higher than default
+    
+    drv.run();
+  end
+  
+endmodule
+
