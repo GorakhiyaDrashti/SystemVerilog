@@ -1,0 +1,36 @@
+////generate the pattern of 010203040506070809010
+
+class add;
+  
+  rand int a[];
+  constraint c1{
+    a.size() == 20;
+    foreach(a[i]) {
+      if(i%2 ==0) 
+        a[i] == 0;
+      else
+        a[i] == (i+1)/2;}
+    }
+    
+ 
+  function void display();
+    $display("array a:%p",a);
+  endfunction
+endclass
+    
+module tb;
+  add s;
+  
+  initial begin
+    s = new();
+  end
+  
+  initial begin
+    assert(s.randomize()) $display("assertion success");
+    else
+      $display("assertion failed");
+    s.display();
+  end
+  
+  
+endmodule   
