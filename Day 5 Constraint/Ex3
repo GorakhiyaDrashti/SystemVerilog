@@ -1,0 +1,42 @@
+////print the right sided traingle pattern using the constraint
+class triangle;
+  rand int rows;
+  rand bit pattern[][]; // 2D array of bits (square matrix)
+
+  constraint c_rows {
+    rows == 5; // Triangle size
+    pattern.size() == rows;
+    foreach (pattern[i]) {
+      pattern[i].size() == rows;
+      foreach (pattern[i][j]) {
+        if (j >= rows - (i + 1))
+          pattern[i][j] == 1;
+        else
+          pattern[i][j] == 0;
+      }
+    }
+  }
+
+  function void display();
+    for (int i = 0; i < rows; i++) begin
+      for (int j = 0; j < rows; j++)
+        $write("%0d", pattern[i][j]);
+      $display("");
+    end
+  endfunction
+endclass
+
+
+module tb;
+  triangle t;
+
+  initial begin
+    t = new();
+    if (t.randomize()) begin
+      $display("Right-aligned triangle square of 1s and 0s:");
+      t.display();
+    end else begin
+      $display("Randomization failed!");
+    end
+  end
+endmodule
