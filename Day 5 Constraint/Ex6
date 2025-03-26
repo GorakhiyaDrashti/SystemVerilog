@@ -1,0 +1,37 @@
+////print the fibbonnaci series
+
+class series;
+  
+  rand int arr[];
+  
+  constraint c1{
+    
+    arr.size() == 15;
+    foreach(arr[i]){
+      if(i<2)
+        arr[i] == i;
+      else
+        arr[i] == arr[i-1] + arr[i-2];
+    }
+  }
+      
+  function void display();
+    foreach(arr[i])
+      $display("fibbonaci series: %d", arr[i]);
+    endfunction
+    
+endclass
+    
+module tb;
+  series s;
+  
+  initial begin
+    s = new();
+    
+    assert(s.randomize());
+    s.display();
+  end
+endmodule
+    
+  
+      
