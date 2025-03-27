@@ -1,0 +1,40 @@
+///create an dynamic array with size between 5 to 10 and the array should be in ascending order.
+
+class packet;
+  
+  rand int a[];
+  
+  constraint c1{
+    
+    a.size() inside {[5:10]};
+    
+    foreach (a[i])
+      a[i] inside { [1:100]};
+    
+    foreach(a[i]) {
+      if(i>0)
+        a[i] > a[i-1];
+    }
+  }
+  
+  function void display();
+    foreach(a[i])
+      $display("array: %0d",a[i]);
+  endfunction
+  
+endclass
+
+module tb;
+  
+  packet p;
+  
+  initial begin
+    
+    p = new();
+    
+    if(p.randomize())
+      p.display();
+    else
+      $display("randomization failed");
+  end
+endmodule
