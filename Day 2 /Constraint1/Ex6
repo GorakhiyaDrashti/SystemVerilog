@@ -1,0 +1,39 @@
+// write the constraint to generate the pattern of 010203040506070809......
+class pattern;
+  
+  randc int a[];
+  constraint c1{
+    foreach(a[i]) 
+      if(i%2 == 0)
+        a[i] == 0;
+      else
+        a[i] == (i+1)/2;
+    
+  }
+  constraint c2{
+    a.size() == 25;
+  }
+  
+  function void display();  
+    foreach(a[i])
+      $display("a[i] : %0d",a[i]);
+  endfunction
+  
+endclass
+
+module tb;
+  pattern p;
+  
+  initial begin
+    p = new();
+    
+    assert(p.randomize()) $display("randomization passed");
+    else $display("randomization failed");
+    
+      
+    p.display();
+  end
+endmodule
+
+        
+  
