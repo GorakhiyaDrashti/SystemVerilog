@@ -1,0 +1,32 @@
+/// write the constraint to print numbers which are divisible by 5
+
+// Code your testbench here
+// or browse Examples
+class constraints;
+  
+  randc int a[];
+  
+  constraint c1{
+    a.size() == 15;
+    foreach(a[i]) 
+      a[i]%5 == 0;
+    foreach(a[i]) 
+      a[i] inside {[1:100]};
+    
+  }
+  
+  function void display();
+    foreach(a[i]) 
+      $display("a[%d]: %0d",i, a[i]);
+  endfunction
+endclass
+
+module tb;
+  constraints c2;
+  
+  initial begin
+    c2 = new();
+    c2.randomize();
+    c2.display();
+  end
+endmodule
