@@ -1,0 +1,29 @@
+// pattern 9 19 29 39 49 59 69 79 89 99
+
+class pattern;
+  
+  randc int arr[10];
+  
+  constraint c2{
+    foreach(arr[i]){
+      arr[i] == (i*10)+9;
+      
+    }
+  }
+  
+  function void display();
+    foreach(arr[i])   
+      $display("arr[%0d]: %0d",i,arr[i]);
+  endfunction
+endclass
+
+module tb;
+  pattern p;
+  
+  initial begin
+    p = new();
+    assert(p.randomize()) $display("randomization successful");
+    else $display("randomization failed");
+    p.display();
+  end
+endmodule
