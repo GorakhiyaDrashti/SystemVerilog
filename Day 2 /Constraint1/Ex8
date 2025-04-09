@@ -1,0 +1,40 @@
+/// Write a constraint for 4-bit dynamic array. The size of the array 
+////should be in between 15 to 20. There should be even number in odd 
+////locations and odd number in even locations. 
+
+
+// Code your testbench here
+// or browse Examples
+class pattern;
+  
+  randc bit [3:0]arr[];
+  
+  constraint c1{
+    arr.size() inside {[15:20]};
+  }
+  constraint c2{
+    foreach(arr[i]){
+      if(i%2 == 0)
+        arr[i] %2 != 0;
+      else
+        arr[i] %2 == 0;
+      
+    }
+  }
+  
+  function void display();
+    foreach(arr[i])   
+      $display("arr[%0d]: %0d",i,arr[i]);
+  endfunction
+endclass
+
+module tb;
+  pattern p;
+  
+  initial begin
+    p = new();
+    assert(p.randomize()) $display("randomization successful");
+    else $display("randomization failed");
+    p.display();
+  end
+endmodule
