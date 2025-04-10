@@ -1,0 +1,32 @@
+// pattern 5 -10 15 -20 25 -30 35 -40
+
+class pattern;
+  
+  randc int arr[10];
+  
+  constraint c2{
+    foreach(arr[i]){
+      if(i%2 == 0)
+        arr[i] == (i+1)*5;
+      else
+        arr[i] == (i+1)*(-5);
+      
+    }
+  }
+  
+  function void display();
+    foreach(arr[i])   
+      $display("arr[%0d]: %0d",i,arr[i]);
+  endfunction
+endclass
+
+module tb;
+  pattern p;
+  
+  initial begin
+    p = new();
+    assert(p.randomize()) $display("randomization successful");
+    else $display("randomization failed");
+    p.display();
+  end
+endmodule
