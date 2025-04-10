@@ -1,0 +1,37 @@
+// Code your testbench here
+// or browse Examples
+////Write a constraint for two random variables such that one 
+//variable should not match with the other & the total number of bits 
+//toggled in one variable should be 5 w.r.t the other.
+
+
+class match;
+  
+  randc bit [7:0]a1;
+  randc bit [7:0]a2;
+  
+  constraint c1{
+    a1 != a2;
+  }
+  constraint c2{
+    $countones(a1 ^ a2) == 5;
+  }
+  
+  function void display();
+    $display("a1: %0b, a2: %0b", a1,a2);
+  endfunction
+    
+endclass
+
+module tb;
+  match m;
+  
+  initial begin
+    m = new();
+    assert(m.randomize) $display("assertion passed");
+    else
+    $display("assertion failed");
+    
+    m.display();
+  end
+endmodule
