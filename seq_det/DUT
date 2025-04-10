@@ -1,0 +1,25 @@
+//detect sequence 10110;
+module seq_det(
+  input d_in,
+  input clk,reset,
+  output out);
+  
+  reg [4:0] seq;
+  
+  always @(posedge clk or negedge reset)
+    begin
+      if(!reset)
+        seq <= 5'b0;
+      else
+        seq <= {seq[3:0], d_in};
+    end
+  assign out = (seq == 5'b10110) ? 1'b1 : 1'b0;
+endmodule
+
+interface intf;
+  logic d_in;
+  logic clk,reset;
+  logic out;
+endinterface
+
+  
