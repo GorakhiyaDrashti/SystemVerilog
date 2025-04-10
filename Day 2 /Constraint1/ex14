@@ -1,0 +1,32 @@
+//write a constraint for 32 bit random variable to have 12 1's at non consequent position. 
+
+class pattern;
+  
+  randc bit [31:0]arr;
+  real n;
+  constraint c2{
+    $countones(arr) == 12;
+    foreach(arr[i]) {
+    if(arr[i] == 1)
+       arr[i+1] != 1;
+    }
+  }
+   
+        
+  
+  function void display();
+      
+    $display("arr: %0b",arr);
+  endfunction
+endclass
+
+module tb;
+  pattern p;
+  
+  initial begin
+    p = new();
+    assert(p.randomize()) $display("randomization successful");
+    else $display("randomization failed");
+    p.display();
+  end
+endmodule
