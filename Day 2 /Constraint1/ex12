@@ -1,0 +1,34 @@
+// pattern 112233445566778899
+
+class pattern;
+  
+  randc int arr[18];
+  constraint c2{
+    foreach(arr[i]){
+      if(i %2 == 0)
+        arr[i] == (i+1)/2 +1;
+       else
+         arr[i] == arr[i-1];
+      
+       
+      
+    }
+  }
+        
+  
+  function void display();
+    foreach(arr[i])   
+      $display("arr[%0d]: %0d",i,arr[i]);
+  endfunction
+endclass
+
+module tb;
+  pattern p;
+  
+  initial begin
+    p = new();
+    assert(p.randomize()) $display("randomization successful");
+    else $display("randomization failed");
+    p.display();
+  end
+endmodule
