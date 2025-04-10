@@ -1,0 +1,32 @@
+// random value between 1.35 and 2.57
+
+class pattern;
+  
+  randc int arr[10];
+  real n;
+  constraint c2{
+    
+    foreach(arr[i]){
+      arr[i] inside {[135:257]};    
+    }
+  }
+        
+  
+  function void display();
+    foreach(arr[i])  begin
+      n = arr[i]/100.00;
+      $display("arr[%0d]: %1f",i,n);
+    end
+  endfunction
+endclass
+
+module tb;
+  pattern p;
+  
+  initial begin
+    p = new();
+    assert(p.randomize()) $display("randomization successful");
+    else $display("randomization failed");
+    p.display();
+  end
+endmodule
