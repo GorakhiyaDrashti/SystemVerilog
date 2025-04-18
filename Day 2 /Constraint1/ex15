@@ -1,0 +1,26 @@
+//Constraint - for 0-100 range 70% and for 101-255 range 30%
+class arr;
+  
+  rand int a;
+  constraint c1{
+ 
+      a  dist{[0:100] := 70, [101:255] := 30};
+  }
+  
+  function void display();
+    $display("a: %0d",a);
+  endfunction
+endclass
+
+module tb;
+  arr a1;
+  
+  initial begin
+    a1 = new();
+    repeat(5) begin
+    assert(a1.randomize) $display("success");
+      else $display("fail");
+      a1.display();
+    end
+  end
+endmodule
