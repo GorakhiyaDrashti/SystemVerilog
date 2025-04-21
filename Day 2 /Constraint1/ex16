@@ -1,0 +1,27 @@
+// Code your testbench here
+// or browse Examples
+///Generate 32-bit random number with only one bit set (should not use $countones).
+
+
+class pattern;
+  
+  randc bit [31:0] a1;
+  rand bit [4:0] count;
+  
+  constraint { a1 == 32'b1 << count; }
+  
+  function void display();
+    $display("a1: %0p",a1);
+  endfunction
+endclass
+
+module tb;
+  pattern p;
+  
+  initial begin
+    p = new();
+    assert(p.randomize) $display("success");
+    else $display("failed");
+    p.display();
+  end
+endmodule
