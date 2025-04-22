@@ -1,0 +1,38 @@
+// Code your testbench here
+// or browse Examples
+class packet;
+  randc bit [7:0]data;
+  randc bit [4:0]addr;
+  
+  
+  constraint c1{
+    solve addr before data;
+    
+  }
+  constraint c2{
+    if(addr %2 != 0)
+      data[1:0] == 2'b00;
+    else
+      data[2:0] == 3'b111;
+  }
+  
+  function void display();
+    $display("addr: %0b -> data: %0b",addr,data);
+ endfunction
+endclass
+             
+             module tb;
+               packet p;
+               
+               initial begin
+                 repeat(5) begin
+                 p = new();
+                 assert(p.randomize) $display("success");
+                 else
+                   $display("failed");
+                 p.display();
+               end
+               end
+             endmodule
+             
+             
